@@ -21,6 +21,10 @@ public class Heroe implements Serializable{
 	private String nombre;
 
 	
+	public Heroe() {
+		super();
+	}
+
 	public Heroe(String nombre) {
 		super();
 		this.nombre = nombre;
