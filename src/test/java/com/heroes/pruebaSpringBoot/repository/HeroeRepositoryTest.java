@@ -5,13 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.heroes.pruebaSpringBoot.model.Heroe;
 
@@ -22,27 +22,16 @@ public class HeroeRepositoryTest {
 	@Autowired
 	private HeroeRepository heroesRepository;
 	
-    private List<Heroe> lista;
-	
-	@BeforeEach
-	public void inicializar() {
-		heroesRepository.save(new Heroe("superman"));
-		heroesRepository.save(new Heroe("spiderman"));
-		heroesRepository.save(new Heroe("batman"));
-		heroesRepository.save(new Heroe("Manolito el fuerte"));
-		heroesRepository.save(new Heroe("nemesis"));
-		lista = heroesRepository.findAll();
-		lista.forEach(h -> System.out.println(h.toString()));
-	}
-	
 	@Test
 	@DisplayName("Consultar todos los super heroes")
+	@Transactional
 	public void consultarSuperHeroesTest() {
-		assertEquals(5, lista.size());
+		assertEquals(5, heroesRepository.findAll().size());
 	}
 	
 	@Test
 	@DisplayName("Consultar un super heroe por id")
+	@Transactional
 	public void consultarSuperHeroePorIdTest() {
 		Heroe h= heroesRepository.findById(1L).get();
 		assertEquals("superman", h.getNombre());
@@ -50,6 +39,7 @@ public class HeroeRepositoryTest {
 	
 	@Test
 	@DisplayName("Consultar un super heroe por id y no existe")
+	@Transactional
 	public void consultarHeroePorIdErrorTest() {
 		Long id = 6L;
 		Exception exception = null;
@@ -63,6 +53,7 @@ public class HeroeRepositoryTest {
 	
 	@Test
 	@DisplayName("Consultar todos los super heroes que contengan en su nombre un parámetro")
+	@Transactional
 	public void consultarSuperHeroesPorNombreTest() {
 		List<Heroe> lista= heroesRepository.findByNombreContainingIgnoreCase("man");
 		assertEquals(4, lista.size());
@@ -72,9 +63,10 @@ public class HeroeRepositoryTest {
 	
 	@Test
 	@DisplayName("Modificar un super heroe")
+	@Transactional
 	public void modificarSuperHeroeTest() {
 		Heroe modificado= new Heroe("Modificado");
-		Optional<Heroe> h = heroesRepository.findById(lista.get(0).getId());
+		Optional<Heroe> h = heroesRepository.findById(1L);
 		h.get().setNombre(modificado.getNombre());
 		Heroe hm = heroesRepository.save(h.get());
 		assertEquals("Modificado", hm.getNombre());
@@ -84,8 +76,9 @@ public class HeroeRepositoryTest {
 	
 	@Test
 	@DisplayName("Eliminar un super heroe")
+	@Transactional
 	public void eliminarSuperHeroeTest() {
-		Long idEliminar= lista.get(0).getId();
+		Long idEliminar= 2L;
 		
 		heroesRepository.deleteById(idEliminar);
 		assertEquals(4, heroesRepository.findAll().size());

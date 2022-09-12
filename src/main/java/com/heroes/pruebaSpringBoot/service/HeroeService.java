@@ -18,8 +18,9 @@ public interface HeroeService {
 	/**
 	 * Método que lista todos los super heroes
 	 * @return lista de super heroes
+	 * @throws HeroeException
 	 */
-	List<Heroe> getHeroes();
+	List<Heroe> getHeroes()throws HeroeException;
 	
 	/**
 	 * Método que busca un heroe por su id
@@ -34,8 +35,9 @@ public interface HeroeService {
 	 * el texto que se pasa como parametro
 	 * @param parametro
 	 * @return lista con los heroes
+	 * @throws HeroeException
 	 */
-	List<Heroe> getHeroesPorNombre(String parametro);
+	List<Heroe> getHeroesPorNombre(String parametro) throws HeroeException;
 	
 	/**
 	 * Método que actualiza un super heroe

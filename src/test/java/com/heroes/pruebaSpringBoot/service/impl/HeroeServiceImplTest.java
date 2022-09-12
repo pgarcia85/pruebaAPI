@@ -6,11 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.heroes.pruebaSpringBoot.error.HeroeException;
 import com.heroes.pruebaSpringBoot.model.Heroe;
@@ -23,39 +25,39 @@ public class HeroeServiceImplTest {
 	@Autowired
 	private HeroeService heroeService;
 	
-		
-	@BeforeAll
-	public void inicializar() {
-		heroeService.guardarHeroe(new Heroe("superman"));
-		heroeService.guardarHeroe(new Heroe("spiderman"));
-		heroeService.guardarHeroe(new Heroe("batman"));
-		heroeService.guardarHeroe(new Heroe("Manolito el fuerte"));
-		heroeService.guardarHeroe(new Heroe("nemesis"));	
-		
-	}
 	
 	@Test
-	public void getHeroesTest() {
+	@DisplayName("Consultar todos los super heroes")
+	@Transactional
+	public void getHeroesTest() throws HeroeException {
 		assertEquals(5, heroeService.getHeroes().size());
 	}
-
+	
 	
 	@Test
+	@DisplayName("Consultar super heroe por id")
+	@Transactional
 	public void getHeroePorIdTest() throws HeroeException {
 		assertEquals("superman", heroeService.getHeroePorId(1L).get().getNombre());
 	}
 	
 	@Test
+	@DisplayName("Consultar super heroe por id. No existe el heroe")
+	@Transactional
 	public void getHeroePorIdErrorTest() throws HeroeException {
 		assertThrows(HeroeException.class, () -> heroeService.getHeroePorId(500L));
 	}
 	
 	@Test
-	public void getHeroesPorNombreTest() {
+	@DisplayName("Consultar todos los super heroes que tengan en su nombre un parametro. La lista está vacía")
+	@Transactional
+	public void getHeroesPorNombreTest() throws HeroeException {
 		assertEquals(4, heroeService.getHeroesPorNombre("man").size());
 	}
 	
 	@Test
+	@DisplayName("Actualizar un super heroe")
+	@Transactional
 	public void actualizarHeroeTest() throws HeroeException {
 		Heroe heroe= new Heroe("Modificado");
 		Heroe heroeModificado = heroeService.actualizarHeroe(5L, heroe);
@@ -63,17 +65,23 @@ public class HeroeServiceImplTest {
 	}
 	
 	@Test
+	@DisplayName("Actualizar un super heroe. No existe el heroe")
+	@Transactional
 	public void actualizarHeroeErrorTest() throws HeroeException {
 		Heroe heroe= new Heroe("Modificado");
 		assertThrows(HeroeException.class, () -> heroeService.actualizarHeroe(100L, heroe));
 	}
 	
 	@Test
+	@DisplayName("Eliminar un super heroe")
+	@Transactional
 	public void eliminarHeroeTest() throws HeroeException {
 		assertTrue(heroeService.eliminarHeroe(2L));
 	}
 	
 	@Test
+	@DisplayName("Eliminar un super heroe. No existe el heroe")
+	@Transactional
 	public void eliminarHeroeErrorTest() throws HeroeException {
 		assertThrows(HeroeException.class, () -> heroeService.eliminarHeroe(200L));
 	}

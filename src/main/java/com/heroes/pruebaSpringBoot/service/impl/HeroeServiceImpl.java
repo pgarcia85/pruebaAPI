@@ -19,8 +19,12 @@ public class HeroeServiceImpl implements HeroeService {
 	private HeroeRepository heroeRepository;
 	
 	@Override
-	public List<Heroe> getHeroes() {
-		return heroeRepository.findAll();
+	public List<Heroe> getHeroes() throws HeroeException {
+		List<Heroe> lista = heroeRepository.findAll();
+		if(lista.isEmpty()) {
+			throw new HeroeException(Errores.HEROES_EMPTY.getCodigo(),Errores.HEROES_EMPTY.getMsg());
+		}
+		return lista;
 	}
 
 	@Override
@@ -30,8 +34,12 @@ public class HeroeServiceImpl implements HeroeService {
 	}	
 
 	@Override
-	public List<Heroe> getHeroesPorNombre(String parametro) {		
-		return heroeRepository.findByNombreContainingIgnoreCase(parametro);
+	public List<Heroe> getHeroesPorNombre(String parametro) throws HeroeException {	
+		List<Heroe> lista = heroeRepository.findByNombreContainingIgnoreCase(parametro);
+		if(lista.isEmpty()) {
+			throw new HeroeException(Errores.HEROE_NOT_NAME.getCodigo(),Errores.HEROE_NOT_NAME.getMsg());
+		}
+		return lista;
 	}
 
 	@Override

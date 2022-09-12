@@ -3,7 +3,9 @@ package com.heroes.pruebaSpringBoot.error;
 public enum Errores {
 	
 
-	HEROE_NOTFOUND ("1001", "No se ha encontrado el super héroe");
+	HEROE_NOTFOUND ("2001", "No se ha encontrado el super héroe"),
+	HEROES_EMPTY ("2002", "No hay super heroes en el sistema"),
+	HEROE_NOT_NAME ("2003", "No hay super heroes que contengan en su nombre '@param'");
 	
 	public final String codigo;
 	public final String msg;
