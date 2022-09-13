@@ -2,23 +2,18 @@ package com.heroes.pruebaSpringBoot.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration {
 	
 	@Bean
@@ -27,7 +22,7 @@ public class SecurityConfiguration {
 	      .authorizeRequests()
 	      .antMatchers("/api/heroes/**").hasAnyRole("USER", "ADMIN")
 	      .antMatchers("/h2-console/**").permitAll()
-	      .anyRequest().authenticated()
+	      .anyRequest().permitAll()
 	      .and().httpBasic()
 	      .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	 // fix H2 database console: Refused to display 
@@ -55,9 +50,5 @@ public class SecurityConfiguration {
 	}
 	
 
-    public void configure(WebSecurity web) throws Exception {
-        web
-            .ignoring()
-            .antMatchers("/h2-console/**");
-    }
+  
 }
