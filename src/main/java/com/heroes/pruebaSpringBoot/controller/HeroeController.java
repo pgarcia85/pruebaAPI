@@ -21,6 +21,11 @@ import com.heroes.pruebaSpringBoot.error.HeroeException;
 import com.heroes.pruebaSpringBoot.model.Heroe;
 import com.heroes.pruebaSpringBoot.service.HeroeService;
 
+import io.swagger.annotations.ApiOperation;
+
+
+
+
 @RestController
 @RequestMapping("/api/heroes")
 public class HeroeController {
@@ -29,6 +34,7 @@ public class HeroeController {
 	private HeroeService heroeService;
 
 	@GetMapping(path = "/allHeroes", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Obtener todos los súper héroes",notes = "Se obtienen todos los súper héroes del sistema")
 	public ResponseEntity<Object> getAllHeroes() {
 
 		Map<String, Object> response = new HashMap<String, Object>();
@@ -45,6 +51,7 @@ public class HeroeController {
 	}
 
 	@GetMapping(path = "/heroe/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Obtener un super heroe por su id",notes = "Busca un super héroe conocido su id")
 	public ResponseEntity<Object> getHeroeById(@PathVariable(value = "id") Long id) {
 
 		Map<String, Object> response = new HashMap<String, Object>();
@@ -61,6 +68,7 @@ public class HeroeController {
 	}
 
 	@GetMapping(path = "/heroesByName/{param}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Obtener todos los súper héroes que contengan un parámetro en su nombre",notes = "Busca todos los súper héroes del sistema que incluyan en su nombre un parámetro")
 	public ResponseEntity<Object> getHeroeByNombre(@PathVariable(value = "param") String param) {
 
 		Map<String, Object> response = new HashMap<String, Object>();
@@ -78,6 +86,7 @@ public class HeroeController {
 	
 	
 	@PutMapping(path = "/updateHeroe/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Actualiza un súper héroe")
 	public ResponseEntity<Object> updateHeroe(@PathVariable("id") Long id, @RequestBody Heroe heroe) {
 
 		Map<String, Object> response = new HashMap<String, Object>();
@@ -95,6 +104,7 @@ public class HeroeController {
 	}
 	
 	@DeleteMapping(path = "/deleteHeroe/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Elimina un súper héroe")
 	public ResponseEntity<Object> deleteHeroe(@PathVariable("id") Long id) {
 
 		Map<String, Object> response = new HashMap<String, Object>();
